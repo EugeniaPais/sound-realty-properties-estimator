@@ -1,0 +1,6 @@
+app/model/*
+base_code/model/*
+*.pyc
+.DS_Store
+__pycache__/
+venv/
