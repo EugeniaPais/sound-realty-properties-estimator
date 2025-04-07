@@ -1,0 +1,33 @@
+name: Run Tests with Docker and Poetry
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      docker:
+        image: docker:19.03.12
+        options: --privileged
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        run: |
+          docker build -t sound-realty-mle-app .
+
+      - name: Run tests in Docker container
+        run: |
+          docker run --rm sound-realty-mle-app poetry run pytest --maxfail=1 --disable-warnings -q
